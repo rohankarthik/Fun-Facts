@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FunFactsActivity"
+    android:background="#ff51b46d"
+    android:id="@+id/backgroundView"
+    android:orientation="vertical"
+
+    >
+
+    <LinearLayout
+        android:id="@+id/factLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="75"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="Did you know ?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:textColor="#80ffffff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ants strech when they wake up in the morning"
+                android:id="@+id/factTextView"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show another fun fact"
+            android:id="@+id/showFactButton"
+            android:layout_margin="10dp"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Share"
+            android:layout_margin="10dp"
+            android:background="@android:color/white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
