@@ -1,6 +1,8 @@
 package simran_preet.com.funfacts;
 
+import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +21,7 @@ public class FunFactsActivity extends ActionBarActivity {
 
     TextView factLabel;
     Button showFactButton;
-    RelativeLayout relativeLayout;
+    LinearLayout relativeLayout;
     LinearLayout factLayout;
 
 
@@ -31,7 +33,7 @@ public class FunFactsActivity extends ActionBarActivity {
 
         factLabel = (TextView) findViewById(R.id.factTextView);
         showFactButton = (Button) findViewById(R.id.showFactButton);
-        relativeLayout = (RelativeLayout) findViewById(R.id.backgroundView);
+        relativeLayout = (LinearLayout) findViewById(R.id.backgroundView);
         factLayout = (LinearLayout) findViewById(R.id.factLayout);
 
 
@@ -55,12 +57,15 @@ public class FunFactsActivity extends ActionBarActivity {
     }
 
 
-    public void setColors() {
-
-        int colorCode = Color.parseColor(FactColors.getInstance().getRandomColor());
+    public String setColors() {
+        String colorValue = FactColors.getInstance().getRandomColor();
+        int colorCode = Color.parseColor(colorValue);
         relativeLayout.setBackgroundColor(colorCode);
         factLayout.setBackgroundColor(colorCode);
         showFactButton.setTextColor(colorCode);
+
+
+        return colorValue;
     }
 
 
