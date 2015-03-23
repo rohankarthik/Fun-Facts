@@ -1,6 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".FunFactsActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".FunFactsActivity">
+    <item
+        android:id="@+id/action_favorite"
+        android:title="@string/favoriteFact"
+        android:icon="@drawable/ic_action_heart_colour_cadet_blue_valentine_999px"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_show"
+        android:title="@string/showFact"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
 </menu>

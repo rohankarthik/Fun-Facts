@@ -5,13 +5,14 @@ import java.util.Random;
 /**
  * Created by jc on 12/20/14.
  */
-public class FactColors {
+public class FactColors
+{
 
     private static FactColors instance = null;
 
-    public static FactColors getInstance() {
-        if(instance == null) instance = new FactColors();
-
+    public static FactColors getInstance()
+    {
+        if (instance == null) instance = new FactColors();
         return instance;
     }
 
@@ -47,16 +48,17 @@ public class FactColors {
     };
 
 
-    private static String[] getColors() {
+    private static String[] getColors()
+    {
         return colors;
     }
 
-    public static String getRandomColor() {
+    public static String getRandomColor()
+    {
         String color;
         Random randomGenerator = new Random();
         int randomNumber = randomGenerator.nextInt(colors.length);
         color = getColors()[randomNumber];
-
         return color;
     }
 
