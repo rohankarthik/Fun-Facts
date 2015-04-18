@@ -1,5 +1,14 @@
 package simran_preet.com.funfacts;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -9,12 +18,36 @@ public class FactBook
 {
 
     private static FactBook instance = null;
+//    private static List<String> facts;
 
     public static FactBook getInstance()
     {
         if (instance == null) instance = new FactBook();
         return instance;
     }
+
+//    public static void retrieveFactsFromParse()
+//    {
+//        ParseQuery query = new ParseQuery("FactsDb");
+//        query.findInBackground(new FindCallback() {
+//            @Override
+//            public void done(List list, ParseException e) {
+//                if (e == null) {
+//                    Log.d("score", "Retrieved " + list + " scores");
+//                    facts = list;
+//                } else {
+//                    Log.d("score", "Error: " + e.getMessage());
+//                }
+//            }
+//
+//            @Override
+//            public void done(Object o, Throwable throwable) {
+//
+//            }
+//        });
+//    }
+
+
 
     private static String[] facts = {
             "Ants stretch when they wake up in the morning.",
@@ -85,7 +118,7 @@ public class FactBook
     };
 
 
-    private String[] getFacts()
+    public String[] getFacts()
     {
         return facts;
     }
@@ -95,7 +128,7 @@ public class FactBook
         String fact;
         Random randomGenerator = new Random();
         int randomNumber = randomGenerator.nextInt(facts.length);
-        fact = getFacts()[randomNumber];
+        fact = facts[randomNumber];
         return fact;
     }
 

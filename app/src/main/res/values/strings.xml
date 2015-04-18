@@ -7,5 +7,6 @@
     <string name="showFact">Show Fact</string>
     <string name="favoriteFact">Favorite Fact</string>
     <string name="title_activity_favorite_facts">FavoriteFactsActivity</string>
+    <string name="title_activity_add_fact">AddFactActivity</string>
 
 </resources>

@@ -27,20 +27,14 @@ public class FunFactsActivity extends ActionBarActivity
 
     private FactsDataSource dataSource;
 
-    String allfactsString = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fun_facts);
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "N47R3qB0x9lXjiwlnffFJKHXwCsqWJS4hOrk0yZT", "VhUxTyrZCgg0cP5VtlcWPTnuMamV7SwEGPY6EyFi");
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
+
 
 
         factLabel = (TextView) findViewById(R.id.factTextView);
