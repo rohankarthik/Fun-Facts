@@ -56,8 +56,6 @@ public class FunFactsActivity extends ActionBarActivity
             {
                 factLabel.setText(FactBook.getInstance().getRandomFact());
                 setColors();
-                Log.d(TAG, "--> " +facts);
-
             }
         });
 
@@ -126,7 +124,6 @@ public class FunFactsActivity extends ActionBarActivity
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            facts = FactBook.getInstance().getFacts();
         }
     }
 }

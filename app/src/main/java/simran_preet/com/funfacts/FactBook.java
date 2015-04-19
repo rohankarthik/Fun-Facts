@@ -8,7 +8,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -18,12 +20,14 @@ public class FactBook {
     private static final String TAG = "FactBook";
     private static FactBook instance = null;
     private static List<String> factsList;
+    private static Map<String, String> factsMap;
 
     public static FactBook getInstance() {
 
         if (instance == null) {
             instance = new FactBook();
             factsList = new ArrayList<String>();
+            factsMap = new HashMap<String, String>();
         }
         return instance;
     }
@@ -35,8 +39,10 @@ public class FactBook {
                 if (e == null) {
                     for (ParseObject parseObject : factList) {
                         String fact = parseObject.get("fact").toString();
+//                        String objectId = parseObject.get("objectId").toString();
                         factsList.add(fact);
-                        Log.d(TAG, "---> "+fact);
+                        factsMap.put(fact.hashCode()+"", fact);
+//                        Log.d(TAG, "---> " + fact);
                     }
 
                 } else {
@@ -116,15 +122,17 @@ public class FactBook {
     };
 
 
-    public List<String> getFacts() {
-        return factsList;
+    public Map<String, String> getFacts() {
+        return factsMap;
     }
 
     public String getRandomFact() {
         String fact;
         Random randomGenerator = new Random();
-        int randomNumber = randomGenerator.nextInt(factsList.size());
-        fact = getFacts().get(randomNumber);
+        int randomNumber = randomGenerator.nextInt(factsMap.size());
+        List<String> keys = new ArrayList<String>(factsMap.keySet());
+        String randomKey = keys.get(randomNumber);
+        fact = getFacts().get(randomKey);
         return fact;
     }
 

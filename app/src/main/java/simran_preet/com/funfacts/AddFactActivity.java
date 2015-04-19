@@ -12,6 +12,7 @@ import com.parse.Parse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class AddFactActivity extends ActionBarActivity {
@@ -19,16 +20,15 @@ public class AddFactActivity extends ActionBarActivity {
     private static final String TAG = "AddFactActivity";
     private List<String> facts;
 
+
+    public AddFactActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fact);
         facts = new ArrayList<String>();
-
-
-
-
-
     }
 
 
