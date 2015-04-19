@@ -17,14 +17,18 @@ import android.widget.Toast;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FunFactsActivity extends ActionBarActivity
 {
+    private static final String TAG = "FunFactsActivity";
     private TextView factLabel;
     private Button showFactButton;
     private LinearLayout relativeLayout;
     private LinearLayout factLayout;
-
+    private List<String> facts;
     private FactsDataSource dataSource;
 
     @Override
@@ -33,14 +37,16 @@ public class FunFactsActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fun_facts);
 
-
-
-
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "N47R3qB0x9lXjiwlnffFJKHXwCsqWJS4hOrk0yZT", "VhUxTyrZCgg0cP5VtlcWPTnuMamV7SwEGPY6EyFi");
 
         factLabel = (TextView) findViewById(R.id.factTextView);
         showFactButton = (Button) findViewById(R.id.showFactButton);
         relativeLayout = (LinearLayout) findViewById(R.id.backgroundView);
         factLayout = (LinearLayout) findViewById(R.id.factLayout);
+
+        FetchFacts fetchFacts = new FetchFacts();
+        fetchFacts.execute();
 
         setColors();
         showFactButton.setOnClickListener(new View.OnClickListener()
@@ -50,6 +56,8 @@ public class FunFactsActivity extends ActionBarActivity
             {
                 factLabel.setText(FactBook.getInstance().getRandomFact());
                 setColors();
+                Log.d(TAG, "--> " +facts);
+
             }
         });
 
@@ -59,6 +67,8 @@ public class FunFactsActivity extends ActionBarActivity
             Log.e("FunFactActivity", "Exception for Open SQLite DB");
         }
     }
+
+
 
     public String setColors()
     {
@@ -97,5 +107,26 @@ public class FunFactsActivity extends ActionBarActivity
         String favoriteFact = factLabel.getText().toString();
         dataSource.addFact(favoriteFact);
         Toast.makeText(this, favoriteFact, Toast.LENGTH_SHORT).show();
+    }
+
+    private class FetchFacts extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            FactBook.getInstance().retrieveFactsFromParse();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            facts = FactBook.getInstance().getFacts();
+        }
     }
 }

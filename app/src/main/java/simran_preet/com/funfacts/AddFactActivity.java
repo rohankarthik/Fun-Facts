@@ -1,33 +1,33 @@
 package simran_preet.com.funfacts;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class AddFactActivity extends ActionBarActivity {
+
+    private static final String TAG = "AddFactActivity";
+    private List<String> facts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_fact);
-
-//        FactBook.getInstance().retrieveFactsFromParse();
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "N47R3qB0x9lXjiwlnffFJKHXwCsqWJS4hOrk0yZT", "VhUxTyrZCgg0cP5VtlcWPTnuMamV7SwEGPY6EyFi");
+        facts = new ArrayList<String>();
 
 
-        for(String fact: FactBook.getInstance().getFacts())
-        {
-            ParseObject parseObject = new ParseObject("FactsDB");
-            parseObject.put("fact", fact);
-            parseObject.saveInBackground();
-        }
+
+
 
     }
 
@@ -53,4 +53,7 @@ public class AddFactActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

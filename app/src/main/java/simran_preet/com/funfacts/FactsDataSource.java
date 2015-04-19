@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class FactsDataSource
 {
+    private static final String TAG = "FactsDataSource";
+
     private SQLiteDatabase database;
     private DatabaseHelper databaseHelper;
     private String[] allcolumns = {DatabaseHelper.ID, DatabaseHelper.FACT};

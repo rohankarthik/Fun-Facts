@@ -8,6 +8,7 @@ import java.util.Random;
 public class FactColors
 {
 
+    private static final String TAG = "FactColors";
     private static FactColors instance = null;
 
     public static FactColors getInstance()

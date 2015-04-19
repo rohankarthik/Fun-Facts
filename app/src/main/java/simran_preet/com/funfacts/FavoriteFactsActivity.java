@@ -13,6 +13,8 @@ import java.util.List;
 
 public class FavoriteFactsActivity extends ActionBarActivity
 {
+    private static final String TAG = "FavoriteFactsActivity";
+
     private FactsDataSource dataSource;
     private ListView factsList;
 

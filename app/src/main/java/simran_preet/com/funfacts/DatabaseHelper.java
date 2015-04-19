@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper
 {
+    private static final String TAG = "DatabaseHelper";
+
     public static final String TABLE = "facts";
     public static final String ID = "id";
     public static final String FACT = "fact";

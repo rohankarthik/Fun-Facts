@@ -3,50 +3,48 @@ package simran_preet.com.funfacts;
 import android.util.Log;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
  * Created by jc on 12/20/14.
  */
-public class FactBook
-{
-
+public class FactBook {
+    private static final String TAG = "FactBook";
     private static FactBook instance = null;
-//    private static List<String> facts;
+    private static List<String> factsList;
 
-    public static FactBook getInstance()
-    {
-        if (instance == null) instance = new FactBook();
+    public static FactBook getInstance() {
+
+        if (instance == null) {
+            instance = new FactBook();
+            factsList = new ArrayList<String>();
+        }
         return instance;
     }
 
-//    public static void retrieveFactsFromParse()
-//    {
-//        ParseQuery query = new ParseQuery("FactsDb");
-//        query.findInBackground(new FindCallback() {
-//            @Override
-//            public void done(List list, ParseException e) {
-//                if (e == null) {
-//                    Log.d("score", "Retrieved " + list + " scores");
-//                    facts = list;
-//                } else {
-//                    Log.d("score", "Error: " + e.getMessage());
-//                }
-//            }
-//
-//            @Override
-//            public void done(Object o, Throwable throwable) {
-//
-//            }
-//        });
-//    }
+    public void retrieveFactsFromParse() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("FactsDB");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> factList, ParseException e) {
+                if (e == null) {
+                    for (ParseObject parseObject : factList) {
+                        String fact = parseObject.get("fact").toString();
+                        factsList.add(fact);
+                        Log.d(TAG, "---> "+fact);
+                    }
 
+                } else {
+                    Log.d(TAG, "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
 
 
     private static String[] facts = {
@@ -118,17 +116,15 @@ public class FactBook
     };
 
 
-    public String[] getFacts()
-    {
-        return facts;
+    public List<String> getFacts() {
+        return factsList;
     }
 
-    public String getRandomFact()
-    {
+    public String getRandomFact() {
         String fact;
         Random randomGenerator = new Random();
-        int randomNumber = randomGenerator.nextInt(facts.length);
-        fact = facts[randomNumber];
+        int randomNumber = randomGenerator.nextInt(factsList.size());
+        fact = getFacts().get(randomNumber);
         return fact;
     }
 
