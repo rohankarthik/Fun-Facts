@@ -37,12 +37,11 @@ public class FactBook {
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> factList, ParseException e) {
                 if (e == null) {
-                    for (ParseObject parseObject : factList) {
+                    for (final ParseObject parseObject : factList) {
                         String fact = parseObject.get("fact").toString();
-//                        String objectId = parseObject.get("objectId").toString();
+                        String id = parseObject.getObjectId();
                         factsList.add(fact);
-                        factsMap.put(fact.hashCode()+"", fact);
-//                        Log.d(TAG, "---> " + fact);
+                        factsMap.put(id, fact);
                     }
 
                 } else {

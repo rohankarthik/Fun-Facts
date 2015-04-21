@@ -54,8 +54,7 @@ public class FunFactsActivity extends ActionBarActivity
             @Override
             public void onClick(View v)
             {
-                factLabel.setText(FactBook.getInstance().getRandomFact());
-                setColors();
+                setRandomFactAndColor();
             }
         });
 
@@ -66,7 +65,11 @@ public class FunFactsActivity extends ActionBarActivity
         }
     }
 
-
+    public void setRandomFactAndColor()
+    {
+        factLabel.setText(FactBook.getInstance().getRandomFact());
+        setColors();
+    }
 
     public String setColors()
     {
@@ -114,16 +117,6 @@ public class FunFactsActivity extends ActionBarActivity
             FactBook.getInstance().retrieveFactsFromParse();
 
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

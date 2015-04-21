@@ -14,12 +14,13 @@ public class DatabaseHelper extends SQLiteOpenHelper
     public static final String TABLE = "facts";
     public static final String ID = "id";
     public static final String FACT = "fact";
+    public static final String OBJECT_ID = "objectId";
 
 
     private static final String DATABASE_NAME = "facts.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String DATABASE_CREATE = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL);", TABLE, ID, FACT);
+    private static final String DATABASE_CREATE = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);", TABLE, ID, FACT, OBJECT_ID);
 
 
     public DatabaseHelper(Context context)
