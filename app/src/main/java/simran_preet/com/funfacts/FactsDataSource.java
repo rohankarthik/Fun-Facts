@@ -40,7 +40,9 @@ public class FactsDataSource
         long insertId = database.insert(DatabaseHelper.TABLE, null, values);
         Cursor cursor = database.query(DatabaseHelper.TABLE, allcolumns, DatabaseHelper.ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
-        Fact newFact = cursorToFact(cursor);
+        Fact newFact = new Fact();
+        newFact.setObjectId(cursor.getString(1));
+        newFact.setFact(cursor.getString(0));
         cursor.close();
         database.close();
         return newFact;
@@ -53,6 +55,12 @@ public class FactsDataSource
         return fact;
     }
 
+    public boolean doesFactExist(Fact fact)
+    {
+        database = databaseHelper.getWritableDatabase();
+        Cursor cursor = database.rawQuery(" SELECT * FROM "+DatabaseHelper.TABLE + " WHERE " + DatabaseHelper.OBJECT_ID + " = ? " , new String[] {fact.getObjectId()});
+        return (cursor.getCount() == 1);
+    }
 
     public List<Fact> getAllFacts()
     {
@@ -62,7 +70,9 @@ public class FactsDataSource
         if(cursor.moveToFirst())
         {
             do {
-                Fact fact = cursorToFact(cursor);
+                Fact fact = new Fact();
+                fact.setFact(cursor.getString(1));
+                fact.setObjectId(cursor.getString(2));
                 facts.add(fact);
             } while(cursor.moveToNext());
         }

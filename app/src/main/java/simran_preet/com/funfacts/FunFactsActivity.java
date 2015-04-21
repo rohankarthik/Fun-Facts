@@ -110,9 +110,15 @@ public class FunFactsActivity extends ActionBarActivity
         Fact favoriteFact = new Fact();
         favoriteFact.setObjectId(currentFact.getObjectId());
         favoriteFact.setFact(currentFact.getFact());
+        boolean doesFactExists = dataSource.doesFactExist(favoriteFact);
 
+        if(doesFactExists)
+        {
+            Toast.makeText(this, "Fact already exists", Toast.LENGTH_SHORT).show();
+            return;
+        }
         dataSource.addFact(favoriteFact);
-        Toast.makeText(this, favoriteFact.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Fact added", Toast.LENGTH_SHORT).show();
     }
 
     private class FetchFacts extends AsyncTask<Void, Void, Void> {
