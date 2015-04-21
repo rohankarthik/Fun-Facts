@@ -125,13 +125,19 @@ public class FactBook {
         return factsMap;
     }
 
-    public String getRandomFact() {
-        String fact;
+    public Fact getRandomFact() {
+
+        Fact fact = new Fact();
+
         Random randomGenerator = new Random();
         int randomNumber = randomGenerator.nextInt(factsMap.size());
-        List<String> keys = new ArrayList<String>(factsMap.keySet());
+        List<String> keys = new ArrayList<String>(getFacts().keySet());
         String randomKey = keys.get(randomNumber);
-        fact = getFacts().get(randomKey);
+        String factTitle = getFacts().get(randomKey);
+        String factId = keys.get(randomNumber);
+        fact.setFact(factTitle);
+        fact.setObjectId(factId);
+
         return fact;
     }
 

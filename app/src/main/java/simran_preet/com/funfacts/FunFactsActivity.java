@@ -30,6 +30,7 @@ public class FunFactsActivity extends ActionBarActivity
     private LinearLayout factLayout;
     private List<String> facts;
     private FactsDataSource dataSource;
+    private Fact currentFact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,7 +68,8 @@ public class FunFactsActivity extends ActionBarActivity
 
     public void setRandomFactAndColor()
     {
-        factLabel.setText(FactBook.getInstance().getRandomFact());
+        currentFact = FactBook.getInstance().getRandomFact();
+        factLabel.setText(currentFact.getFact());
         setColors();
     }
 
@@ -105,9 +107,12 @@ public class FunFactsActivity extends ActionBarActivity
 
     public void addFactToFavorite()
     {
-        String favoriteFact = factLabel.getText().toString();
+        Fact favoriteFact = new Fact();
+        favoriteFact.setObjectId(currentFact.getObjectId());
+        favoriteFact.setFact(currentFact.getFact());
+
         dataSource.addFact(favoriteFact);
-        Toast.makeText(this, favoriteFact, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, favoriteFact.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private class FetchFacts extends AsyncTask<Void, Void, Void> {
@@ -115,7 +120,6 @@ public class FunFactsActivity extends ActionBarActivity
         @Override
         protected Void doInBackground(Void... params) {
             FactBook.getInstance().retrieveFactsFromParse();
-
             return null;
         }
     }

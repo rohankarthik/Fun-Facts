@@ -5,17 +5,14 @@ package simran_preet.com.funfacts;
  */
 public class Fact
 {
-    private long id;
     private String fact;
-
-    public long getId()
-    {
-        return id;
+    private String objectId;
+    public String getObjectId() {
+        return objectId;
     }
 
-    public void setId(long id)
-    {
-        this.id = id;
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getFact()
@@ -31,6 +28,6 @@ public class Fact
     @Override
     public String toString()
     {
-        return String.format("%d: %s", id, fact);
+        return String.format("%s", fact);
     }
 }

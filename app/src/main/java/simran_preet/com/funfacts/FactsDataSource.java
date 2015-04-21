@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,11 +31,12 @@ public class FactsDataSource
         databaseHelper.close();
     }
 
-    public Fact addFact(String fact)
+    public Fact addFact(Fact fact)
     {
         database = databaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.FACT, fact);
+        values.put(DatabaseHelper.FACT, fact.getFact());
+        values.put(DatabaseHelper.OBJECT_ID, fact.getObjectId());
         long insertId = database.insert(DatabaseHelper.TABLE, null, values);
         Cursor cursor = database.query(DatabaseHelper.TABLE, allcolumns, DatabaseHelper.ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
@@ -46,8 +48,8 @@ public class FactsDataSource
 
     private Fact cursorToFact(Cursor cursor) {
         Fact fact = new Fact();
-        fact.setId(cursor.getLong(0));
         fact.setFact(cursor.getString(1));
+        fact.setObjectId(cursor.getString(2));
         return fact;
     }
 
