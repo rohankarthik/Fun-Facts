@@ -1,1 +1,6 @@
-# This is version v 0.1, few things might not work at all or as you expected, data is also limited and local to you phone. 
+# Fun Facts 
+
+Its a course project for CS646 - Android Programming taught as a part of Extended Studies in San Diego State University.
+There might be few things that not might work in certain commits. 
+
+I try my best to maintain this project in a working and performance efficient condition. 
