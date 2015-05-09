@@ -156,7 +156,7 @@ public class FunFactsActivity extends ActionBarActivity {
                 String type = "image/*";
                 String filename = "/myPhoto.jpg";
                 String mediaPath = Environment.getExternalStorageDirectory() + filename;
-                String captionText = "<< media caption >>";
+                String captionText = "Another Fun Fact for you.";
                 createInstagramIntent(type, mediaPath, captionText);
             }
         });
