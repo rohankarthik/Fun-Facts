@@ -2,13 +2,13 @@ package simran_preet.com.funfacts;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +31,10 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.parse.Parse;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -149,6 +152,12 @@ public class FunFactsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Instagram", Toast.LENGTH_SHORT).show();
+
+                String type = "image/*";
+                String filename = "/myPhoto.jpg";
+                String mediaPath = Environment.getExternalStorageDirectory() + filename;
+                String captionText = "<< media caption >>";
+                createInstagramIntent(type, mediaPath, captionText);
             }
         });
 
@@ -161,17 +170,7 @@ public class FunFactsActivity extends ActionBarActivity {
 
     }
 
-    public static Bitmap getBitmapFromView(View view) {
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(returnedBitmap);
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
-            bgDrawable.draw(canvas);
-        else
-            canvas.drawColor(Color.WHITE);
-        view.draw(canvas);
-        return returnedBitmap;
-    }
+
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
@@ -235,5 +234,55 @@ public class FunFactsActivity extends ActionBarActivity {
             FactBook.getInstance().retrieveFactsFromParse();
             return null;
         }
+    }
+
+    private void createInstagramIntent(String type, String mediaPath, String caption){
+
+        // Create the new Intent using the 'Send' action.
+        Intent share = new Intent(Intent.ACTION_SEND);
+
+        // Set the MIME type
+        share.setType(type);
+
+        // Create the URI from the media
+        File media = new File(mediaPath);
+        Uri uri = bitmapToUri();
+
+        // Add the URI and the caption to the Intent.
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_TEXT, caption);
+
+        // Broadcast the Intent.
+        startActivity(Intent.createChooser(share, "Share to"));
+    }
+
+    private Uri bitmapToUri()
+    {
+        File path = null;
+        File imageFile = null;
+        try {
+            Bitmap image = getBitmapFromView(factLayout);
+            path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            imageFile = new File(path, new Date().getTime() + ".png");
+            imageFile.createNewFile();
+            FileOutputStream fileOutPutStream = new FileOutputStream(imageFile);
+            image.compress(Bitmap.CompressFormat.PNG, 80, fileOutPutStream);
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return Uri.parse("file://" + imageFile.getAbsolutePath());
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
     }
 }
