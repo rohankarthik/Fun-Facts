@@ -1,6 +1,9 @@
 package simran_preet.com.funfacts;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -106,7 +109,7 @@ public class FunFactsActivity extends ActionBarActivity {
         buttonTwitter.setBackgroundResource(R.drawable.ic_twitter200);
 
         SubActionButton buttonInstagram = itemBuilder.setContentView(iconInstagram).build();
-        buttonInstagram.setBackgroundResource(R.drawable.ic_instagram200);
+        buttonInstagram.setBackgroundResource(R.drawable.ic_more256);
 
         FloatingActionMenu socialShareMenu = new FloatingActionMenu.Builder(this)
                 .addSubActionView(buttonFacebook)
@@ -119,23 +122,7 @@ public class FunFactsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Facebook", Toast.LENGTH_SHORT).show();
-//                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_twitter200);
-//                SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
-//                SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
-//                ShareDialog dialog = new ShareDialog(FunFactsActivity.this);
-//                if (dialog.canShow(SharePhotoContent.class)){
-//                    dialog.show(content);
-//                }
-//                else{
-//                    Log.d(TAG, "you cannot share photos :(");
-//                }
                 if (ShareDialog.canShow(ShareLinkContent.class)) {
-//                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
-//                            .setContentTitle("Hello Facebook")
-//                            .setContentDescription(
-//                                    "The 'Hello Facebook' sample  showcases simple Facebook integration")
-//                            .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-//                            .build();
                     Bitmap image = getBitmapFromView(factLayout);
                     SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
                     ArrayList<SharePhoto> sharePhotos = new ArrayList<SharePhoto>();
@@ -152,7 +139,6 @@ public class FunFactsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Instagram", Toast.LENGTH_SHORT).show();
-
                 String type = "image/*";
                 String filename = "/myPhoto.jpg";
                 String mediaPath = Environment.getExternalStorageDirectory() + filename;
@@ -238,22 +224,20 @@ public class FunFactsActivity extends ActionBarActivity {
 
     private void createInstagramIntent(String type, String mediaPath, String caption){
 
-        // Create the new Intent using the 'Send' action.
         Intent share = new Intent(Intent.ACTION_SEND);
-
-        // Set the MIME type
         share.setType(type);
-
-        // Create the URI from the media
         File media = new File(mediaPath);
         Uri uri = bitmapToUri();
-
-        // Add the URI and the caption to the Intent.
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.putExtra(Intent.EXTRA_TEXT, caption);
-
-        // Broadcast the Intent.
         startActivity(Intent.createChooser(share, "Share to"));
+
+    }
+
+    private boolean isIntentAvailable(Context ctx, Intent intent) {
+        final PackageManager packageManager = ctx.getPackageManager();
+        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
     }
 
     private Uri bitmapToUri()
