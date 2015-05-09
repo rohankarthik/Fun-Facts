@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "simran_preet.com.funfacts"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -24,5 +24,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
+    compile 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
 
 }

@@ -10,10 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -64,6 +68,59 @@ public class FunFactsActivity extends ActionBarActivity
         } catch (Exception e) {
             Log.e("FunFactActivity", "Exception for Open SQLite DB");
         }
+
+        // in Activity Context
+        ImageView icon = new ImageView(this); // Create an icon
+
+        FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(icon)
+                .setBackgroundDrawable(R.drawable.ic_share200)
+                .build();
+
+
+        ImageView iconFacebook = new ImageView(this);
+        ImageView iconTwitter = new ImageView(this);
+        ImageView iconInstagram = new ImageView(this);
+
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+
+        SubActionButton buttonFacebook = itemBuilder.setContentView(iconFacebook).build();
+        buttonFacebook.setBackgroundResource(R.drawable.ic_facebook200);
+
+        SubActionButton buttonTwitter = itemBuilder.setContentView(iconTwitter).build();
+        buttonTwitter.setBackgroundResource(R.drawable.ic_twitter200);
+
+        SubActionButton buttonInstagram = itemBuilder.setContentView(iconInstagram).build();
+        buttonInstagram.setBackgroundResource(R.drawable.ic_instagram200);
+
+        FloatingActionMenu socialShareMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(buttonFacebook)
+                .addSubActionView(buttonTwitter)
+                .addSubActionView(buttonInstagram)
+                .attachTo(actionButton)
+                .build();
+
+        buttonFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Facebook", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        buttonInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Instagram", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        buttonTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Twitter", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public void setRandomFactAndColor()

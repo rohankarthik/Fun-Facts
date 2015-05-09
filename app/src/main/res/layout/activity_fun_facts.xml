@@ -58,11 +58,11 @@
         <Button
 
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:text="Show another fact"
             android:id="@+id/showFactButton"
             android:layout_margin="10dp"
+            android:height="50dp"
             android:background="@android:color/white" />
 
     </LinearLayout>
