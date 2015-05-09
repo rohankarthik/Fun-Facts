@@ -8,5 +8,6 @@
     <string name="favoriteFact">Favorite Fact</string>
     <string name="title_activity_favorite_facts">FavoriteFactsActivity</string>
     <string name="title_activity_add_fact">AddFactActivity</string>
+    <string name="app_id">355424607998265</string>
 
 </resources>

@@ -1,7 +1,12 @@
 package simran_preet.com.funfacts;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,18 +20,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.parse.Parse;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FunFactsActivity extends ActionBarActivity
-{
+public class FunFactsActivity extends ActionBarActivity {
     private static final String TAG = "FunFactsActivity";
     private TextView factLabel;
     private Button showFactButton;
@@ -35,11 +44,16 @@ public class FunFactsActivity extends ActionBarActivity
     private List<String> facts;
     private FactsDataSource dataSource;
     private Fact currentFact;
+    private CallbackManager callbackManager;
+    private ShareDialog shareDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+
         setContentView(R.layout.activity_fun_facts);
 
         Parse.enableLocalDatastore(this);
@@ -54,11 +68,9 @@ public class FunFactsActivity extends ActionBarActivity
         fetchFacts.execute();
 
         setColors();
-        showFactButton.setOnClickListener(new View.OnClickListener()
-        {
+        showFactButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 setRandomFactAndColor();
             }
         });
@@ -66,7 +78,7 @@ public class FunFactsActivity extends ActionBarActivity
         try {
             dataSource = new FactsDataSource(this);
         } catch (Exception e) {
-            Log.e("FunFactActivity", "Exception for Open SQLite DB");
+            Log.e(TAG, "Exception for Open SQLite DB");
         }
 
         // in Activity Context
@@ -104,6 +116,32 @@ public class FunFactsActivity extends ActionBarActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Facebook", Toast.LENGTH_SHORT).show();
+//                Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_twitter200);
+//                SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
+//                SharePhotoContent content = new SharePhotoContent.Builder().addPhoto(photo).build();
+//                ShareDialog dialog = new ShareDialog(FunFactsActivity.this);
+//                if (dialog.canShow(SharePhotoContent.class)){
+//                    dialog.show(content);
+//                }
+//                else{
+//                    Log.d(TAG, "you cannot share photos :(");
+//                }
+                if (ShareDialog.canShow(ShareLinkContent.class)) {
+//                    ShareLinkContent linkContent = new ShareLinkContent.Builder()
+//                            .setContentTitle("Hello Facebook")
+//                            .setContentDescription(
+//                                    "The 'Hello Facebook' sample  showcases simple Facebook integration")
+//                            .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+//                            .build();
+                    Bitmap image = getBitmapFromView(factLayout);
+                    SharePhoto photo = new SharePhoto.Builder().setBitmap(image).build();
+                    ArrayList<SharePhoto> sharePhotos = new ArrayList<SharePhoto>();
+                    sharePhotos.add(photo);
+                    SharePhotoContent linkContent2 = new SharePhotoContent.Builder().setPhotos(sharePhotos).build();
+
+                    shareDialog.show(linkContent2);
+                }
+
             }
         });
 
@@ -123,15 +161,31 @@ public class FunFactsActivity extends ActionBarActivity
 
     }
 
-    public void setRandomFactAndColor()
-    {
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setRandomFactAndColor() {
         currentFact = FactBook.getInstance().getRandomFact();
         factLabel.setText(currentFact.getFact());
         setColors();
     }
 
-    public String setColors()
-    {
+    public String setColors() {
         String colorValue = FactColors.getInstance().getRandomColor();
         int colorCode = Color.parseColor(colorValue);
         relativeLayout.setBackgroundColor(colorCode);
@@ -141,15 +195,13 @@ public class FunFactsActivity extends ActionBarActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_fun_facts, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_favorite) {
             addFactToFavorite();
@@ -162,15 +214,13 @@ public class FunFactsActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void addFactToFavorite()
-    {
+    public void addFactToFavorite() {
         Fact favoriteFact = new Fact();
         favoriteFact.setObjectId(currentFact.getObjectId());
         favoriteFact.setFact(currentFact.getFact());
         boolean doesFactExists = dataSource.doesFactExist(favoriteFact);
 
-        if(doesFactExists)
-        {
+        if (doesFactExists) {
             Toast.makeText(this, "Fact already exists", Toast.LENGTH_SHORT).show();
             return;
         }

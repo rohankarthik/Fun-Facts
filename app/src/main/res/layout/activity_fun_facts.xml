@@ -48,22 +48,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:paddingLeft="80dp"
-        android:paddingRight="80dp"
         android:layout_height="0dp"
         android:layout_weight="25"
-        android:layout_margin="5dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
-
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Show another fact"
+            android:text="Next"
             android:id="@+id/showFactButton"
             android:layout_margin="10dp"
             android:height="50dp"
-            android:background="@android:color/white" />
+            android:shadowRadius="@android:integer/config_longAnimTime"
+            />
 
     </LinearLayout>
 
